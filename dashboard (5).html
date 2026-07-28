@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --violet-950:#1E0F3D;
+    --violet-900:#2C1259;
+    --violet-800:#3B1670;
+    --violet-700:#5B21B6;
+    --violet-600:#7C3AED;
+    --violet-500:#9061F9;
+    --violet-200:#DCC9FB;
+    --violet-100:#EDE3FD;
+    --violet-50:#F7F3FE;
+    --lilac:#B692F6;
+    --gold:#F0B429;
+    --coral:#FF6F61;
+    --ink:#20142F;
+    --ink-soft:#5E5474;
+    --paper:#FBFAFD;
+    --white:#FFFFFF;
+    --line:#E7DEF7;
+    --shadow-lg: 0 20px 45px -20px rgba(44,18,89,0.35);
+    --shadow-sm: 0 6px 16px -8px rgba(44,18,89,0.25);
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:10px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:
+      radial-gradient(1100px 500px at 100% -10%, var(--violet-100), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, #F1E9FE, transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Fraunces', serif;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  ::selection{background:var(--violet-200);}
+
+  /* ---------- Layout shell ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns:288px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    background:
+      linear-gradient(190deg, var(--violet-900) 0%, var(--violet-950) 62%, #150A2C 100%);
+    color:#EDE6FB;
+    padding:26px 18px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    z-index:40;
+  }
+  .sidebar::-webkit-scrollbar{width:6px;}
+  .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12); border-radius:6px;}
+
+  .brand-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:2px 4px 8px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+  }
+  .brand-mark{
+    width:38px; height:38px;
+    border-radius:11px;
+    background:linear-gradient(135deg, var(--gold), #F6D573 55%, var(--gold));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    color:var(--violet-950);
+    font-size:17px;
+    flex:none;
+    box-shadow:0 6px 14px -6px rgba(240,180,41,0.6);
+  }
+  .brand-text .name{font-weight:700; font-size:14.5px; letter-spacing:0.2px; color:#fff;}
+  .brand-text .sub{font-size:11px; color:#B7A6E0; letter-spacing:0.4px; text-transform:uppercase;}
+  .close-btn{
+    display:none;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,0.08);
+    color:#EDE6FB;
+    align-items:center; justify-content:center;
+    font-size:16px;
+  }
+
+  .launch-row{display:flex; gap:9px;}
+  .launch-chip{
+    flex:1;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.09);
+    border-radius:var(--radius-sm);
+    padding:10px 10px;
+    font-size:12px;
+    font-weight:600;
+    color:#EAE1FB;
+    display:flex; align-items:center; gap:7px;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .launch-chip:hover{background:rgba(255,255,255,0.13); transform:translateY(-1px);}
+  .launch-chip svg{flex:none;}
+
+  .nav-search{
+    display:flex; align-items:center; gap:9px;
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:var(--radius-sm);
+    padding:9px 12px;
+    color:#C6B7EA;
+  }
+  .nav-search input{
+    background:none; border:none; outline:none; color:#fff; font-size:13px; width:100%;
+  }
+  .nav-search input::placeholder{color:#9985C4;}
+
+  nav.menu{display:flex; flex-direction:column; gap:4px; flex:1;}
+  .menu-group{margin-top:10px;}
+  .menu-group:first-child{margin-top:2px;}
+  .group-label{
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    color:#8A76BE;
+    font-weight:700;
+    padding:0 10px 8px;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:11px;
+    padding:10px 11px;
+    border-radius:var(--radius-sm);
+    font-size:13.5px;
+    font-weight:500;
+    color:#DBD0F4;
+    position:relative;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-item svg{flex:none; opacity:.85;}
+  .nav-item .chev{margin-left:auto; transition:transform .2s ease; opacity:.7;}
+  .nav-item:hover{background:rgba(255,255,255,0.06); color:#fff;}
+  .nav-item.active{
+    background:linear-gradient(90deg, rgba(240,180,41,0.18), rgba(240,180,41,0.03));
+    color:#fff;
+    box-shadow:inset 3px 0 0 var(--gold);
+  }
+  .nav-item.active svg{opacity:1; color:var(--gold);}
+  .badge{
+    background:var(--coral);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    padding:2px 6px;
+    border-radius:20px;
+    margin-left:auto;
+  }
+  .submenu{
+    max-height:0;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    padding-left:14px;
+    border-left:1px dashed rgba(255,255,255,0.15);
+    margin-left:23px;
+    transition:max-height .25s ease;
+  }
+  .submenu.open{max-height:220px;}
+  .submenu .nav-item{font-size:12.8px; padding:8px 10px; color:#C7B9EA;}
+  .has-sub.open .chev{transform:rotate(180deg);}
+
+  .sidebar-footer{
+    margin-top:auto;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,0.09);
+    display:flex; align-items:center; gap:10px;
+  }
+  .avatar-sm{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(135deg, var(--lilac), var(--violet-500));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px; color:#fff; flex:none;
+  }
+  .sidebar-footer .who .n{font-size:13px; font-weight:600; color:#fff;}
+  .sidebar-footer .who .r{font-size:11px; color:#A692D3;}
+  .logout-btn{
+    margin-left:auto;
+    width:32px; height:32px;
+    border-radius:9px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.05);
+    color:#DBD0F4;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ---------- Overlay for mobile ---------- */
+  .overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(20,10,40,0.45);
+    backdrop-filter:blur(2px);
+    z-index:30;
+  }
+
+  /* ---------- Main ---------- */
+  .main{
+    padding:26px 34px 60px;
+    max-width:1180px;
+    width:100%;
+  }
+  .topbar{
+    display:flex; align-items:center; gap:16px;
+    margin-bottom:26px;
+  }
+  .menu-toggle{
+    display:none;
+    width:40px; height:40px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--white);
+    align-items:center; justify-content:center;
+    flex:none;
+  }
+  .search-bar{
+    flex:1;
+    display:flex; align-items:center; gap:10px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:11px 16px;
+    box-shadow:var(--shadow-sm);
+    color:var(--ink-soft);
+  }
+  .search-bar input{border:none; outline:none; font-size:13.5px; width:100%; font-family:inherit; color:var(--ink);}
+  .top-actions{display:flex; align-items:center; gap:10px;}
+  .icon-btn{
+    width:42px; height:42px;
+    border-radius:13px;
+    border:1px solid var(--line);
+    background:var(--white);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    color:var(--violet-700);
+    box-shadow:var(--shadow-sm);
+  }
+  .icon-btn .dot{
+    position:absolute; top:9px; right:9px;
+    width:8px; height:8px; border-radius:50%;
+    background:var(--coral);
+    border:2px solid var(--white);
+  }
+  .top-avatar{
+    width:42px; height:42px; border-radius:13px;
+    background:linear-gradient(135deg, var(--violet-600), var(--lilac));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:700; font-size:14px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    background:linear-gradient(120deg, var(--violet-800) 0%, var(--violet-700) 48%, #7A3FE0 100%);
+    border-radius:var(--radius-lg);
+    padding:34px 36px;
+    color:#fff;
+    overflow:hidden;
+    box-shadow:var(--shadow-lg);
+    margin-bottom:26px;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; right:-60px; top:-90px;
+    width:280px; height:280px;
+    background:radial-gradient(circle, rgba(240,180,41,0.35), transparent 70%);
+  }
+  .hero::after{
+    content:"";
+    position:absolute; left:30%; bottom:-120px;
+    width:260px; height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
+  }
+  .hero-top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:20px; position:relative; z-index:1;
+    flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-size:11px; text-transform:uppercase; letter-spacing:1.6px;
+    color:var(--violet-200); font-weight:700; margin-bottom:10px;
+  }
+  .hero h1{font-size:29px; font-weight:600; line-height:1.15; max-width:460px;}
+  .hero p{font-size:13.5px; color:#E5D9FB; margin-top:10px; max-width:420px; line-height:1.6;}
+  .hero-cta{
+    display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;
+  }
+  .btn{
+    padding:11px 18px;
+    border-radius:11px;
+    font-size:13px; font-weight:700;
+    border:none;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-gold{background:var(--gold); color:#3A2600;}
+  .btn-ghost{background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.25);}
+
+  .ring-card{
+    position:relative; z-index:1;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:18px;
+    padding:18px 22px;
+    display:flex; align-items:center; gap:18px;
+    min-width:230px;
+  }
+  .ring{width:74px; height:74px; flex:none;}
+  .ring-label{font-size:11px; color:var(--violet-200); text-transform:uppercase; letter-spacing:0.8px; font-weight:700;}
+  .ring-value{font-size:22px; font-weight:800; color:#fff; margin-top:2px;}
+  .ring-value span{font-size:12px; color:var(--violet-200); font-weight:600;}
+
+  /* ---------- Stat strip ---------- */
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+    margin-bottom:28px;
+  }
+  .stat-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:16px 18px;
+    box-shadow:var(--shadow-sm);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .stat-top{display:flex; align-items:center; justify-content:space-between;}
+  .stat-icon{
+    width:36px; height:36px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stat-trend{font-size:11px; font-weight:700; padding:3px 8px; border-radius:20px;}
+  .trend-up{color:#1C8A5A; background:#E4F8EE;}
+  .trend-warn{color:#B4530A; background:#FDECD8;}
+  .trend-flat{color:var(--violet-700); background:var(--violet-100);}
+  .stat-num{font-size:22px; font-weight:800; color:var(--ink); font-family:'Fraunces', serif;}
+  .stat-label{font-size:12px; color:var(--ink-soft);}
+
+  /* ---------- Section heading ---------- */
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:15px;
+  }
+  .section-head h2{font-size:19px; font-weight:600; color:var(--ink);}
+  .section-head a{font-size:12.5px; font-weight:700; color:var(--violet-700);}
+
+  /* ---------- Quick access grid ---------- */
+  .quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+    margin-bottom:30px;
+  }
+  .quick-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:18px 16px;
+    display:flex; flex-direction:column; gap:12px;
+    box-shadow:var(--shadow-sm);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .quick-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-lg); border-color:var(--violet-200);}
+  .quick-ic{
+    width:40px; height:40px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .quick-card h3{font-size:14px; font-weight:700; color:var(--ink);}
+  .quick-card p{font-size:11.5px; color:var(--ink-soft); line-height:1.4;}
+
+  /* palette rotation for icon tiles */
+  .tint-1{background:var(--violet-100); color:var(--violet-700);}
+  .tint-2{background:#FFE9C2; color:#8A5A00;}
+  .tint-3{background:#FFE1DC; color:#B33324;}
+  .tint-4{background:#DDF3E6; color:#1C8A5A;}
+
+  /* ---------- Two column: announcements + timetable ---------- */
+  .two-col{
+    display:grid;
+    grid-template-columns:1.35fr 1fr;
+    gap:20px;
+  }
+  .panel{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:22px;
+    box-shadow:var(--shadow-sm);
+  }
+  .announce-item{
+    display:flex; gap:13px;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .announce-item:last-child{border-bottom:none; padding-bottom:0;}
+  .announce-item:first-child{padding-top:0;}
+  .tag-dot{
+    width:9px; height:9px; border-radius:50%; margin-top:6px; flex:none;
+  }
+  .announce-item h4{font-size:13.5px; font-weight:700; color:var(--ink); margin-bottom:3px;}
+  .announce-item span{font-size:11.5px; color:var(--ink-soft);}
+  .announce-item .when{font-size:10.5px; color:#A697C4; margin-left:auto; white-space:nowrap;}
+
+  .day-row{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .day-row:last-child{border-bottom:none;}
+  .day-time{
+    font-size:11px; font-weight:700; color:var(--violet-700);
+    background:var(--violet-100); padding:6px 9px; border-radius:8px; min-width:70px; text-align:center;
+  }
+  .day-info h4{font-size:13px; font-weight:700; color:var(--ink);}
+  .day-info span{font-size:11px; color:var(--ink-soft);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1040px){
+    .stat-strip{grid-template-columns:repeat(2,1fr);}
+    .quick-grid{grid-template-columns:repeat(2,1fr);}
+    .two-col{grid-template-columns:1fr;}
+  }
+  @media (max-width: 880px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{
+      position:fixed; left:0; top:0; width:280px;
+      transform:translateX(-100%);
+      transition:transform .28s ease;
+      box-shadow:30px 0 60px rgba(0,0,0,0.25);
+    }
+    .sidebar.open{transform:translateX(0);}
+    .close-btn{display:flex;}
+    .menu-toggle{display:flex;}
+    .overlay.show{display:block;}
+    .hero-top{flex-direction:column;}
+    .main{padding:20px 16px 50px;}
+  }
+  @media (max-width: 560px){
+    .stat-strip{grid-template-columns:1fr 1fr;}
+    .quick-grid{grid-template-columns:1fr 1fr;}
+    .hero h1{font-size:23px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="shell">
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div class="brand-text">
+          <div class="name">Rathinam College</div>
+          <div class="sub">Student Portal</div>
+        </div>
+      </div>
+      <button class="close-btn" id="closeBtn" aria-label="Close menu">✕</button>
+    </div>
+
+    <div class="launch-row">
+      <a class="launch-chip" href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Koha
+      </a>
+      <a class="launch-chip" href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        PI360
+      </a>
+    </div>
+
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search menu...">
+    </div>
+
+    <nav class="menu">
+      <div class="menu-group">
+        <div class="group-label">Overview</div>
+        <a class="nav-item active" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+          My Institution
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          My Learning
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Messages
+          <span class="badge">4</span>
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Academics</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Timetable
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Attendance
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Assignments
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+          Exam Schedules
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 3 4 5-8"/></svg>
+          Overall Grade
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Assessments
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Teaching Content
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Transcript
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Services</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Holidays
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+          Leave
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.9.4-1.5 1-1.5 2.2M12 17h.01"/></svg>
+          Services
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          Billing
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+          Student Counselling
+        </a>
+        <div class="nav-item has-sub" id="enrollToggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Enrollment
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="submenu" id="enrollSub">
+          <a class="nav-item" href="#">Semester Enrollment</a>
+          <a class="nav-item" href="#">Pre-enlistment</a>
+          <a class="nav-item" href="#">Curriculum</a>
+        </div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Clearance
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Scholarship
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Campus Life</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>
+          Activity
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+          Announcement
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M17 8l4 4-4 4"/></svg>
+          Engage
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Project
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Feedback
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Records</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          Reports
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h4M17 12h4M12 3v4M12 17v4"/></svg>
+          Proctortrack
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          E-Portfolio
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Final Result
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M14 10h4M14 14h3"/></svg>
+          ID Card
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="avatar-sm">AK</div>
+      <div class="who">
+        <div class="n">Aravind Kumar</div>
+        <div class="r">III B.Sc CS &middot; 21CS045</div>
+      </div>
+      <button class="logout-btn" title="Log out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search attendance, assignments, results...">
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+        <div class="top-avatar">AK</div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Odd Semester &middot; 2026</div>
+          <h1>Good afternoon, Aravind.</h1>
+          <p>You have 2 assignments due this week and a fee installment pending. Your attendance is holding steady above the eligibility line.</p>
+          <div class="hero-cta">
+            <button class="btn btn-gold">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              View Assignments
+            </button>
+            <button class="btn btn-ghost">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              Pay Fees
+            </button>
+          </div>
+        </div>
+
+        <div class="ring-card">
+          <svg class="ring" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="33" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="9"/>
+            <circle cx="40" cy="40" r="33" fill="none" stroke="#F0B429" stroke-width="9" stroke-linecap="round"
+              stroke-dasharray="207.3" stroke-dashoffset="41.5" transform="rotate(-90 40 40)"/>
+            <text x="40" y="46" text-anchor="middle" fill="#fff" font-size="18" font-weight="700" font-family="Fraunces, serif">80%</text>
+          </svg>
+          <div>
+            <div class="ring-label">Attendance</div>
+            <div class="ring-value">Eligible <span>&middot; min 75%</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stat strip -->
+    <section class="stat-strip">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-1">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          <span class="stat-trend trend-warn">2 due</span>
+        </div>
+        <div class="stat-num">5</div>
+        <div class="stat-label">Assignments this term</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-2">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <span class="stat-trend trend-flat">Sep 14</span>
+        </div>
+        <div class="stat-num">12 days</div>
+        <div class="stat-label">Until exams begin</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-3">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          </div>
+          <span class="stat-trend trend-warn">Due Aug 5</span>
+        </div>
+        <div class="stat-num">&#8377;12,400</div>
+        <div class="stat-label">Fee balance</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-4">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 3 4 5-8"/></svg>
+          </div>
+          <span class="stat-trend trend-up">+0.3</span>
+        </div>
+        <div class="stat-num">8.4 CGPA</div>
+        <div class="stat-label">Overall grade</div>
+      </div>
+    </section>
+
+    <!-- Quick access -->
+    <section>
+      <div class="section-head">
+        <h2>Quick Access</h2>
+        <a href="#">Customize</a>
+      </div>
+      <div class="quick-grid">
+        <div class="quick-card">
+          <div class="quick-ic tint-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <h3>Attendance</h3>
+          <p>Daily & subject-wise attendance log</p>
+        </div>
+        <div class="quick-card">
+          <div class="quick-ic tint-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <h3>Timetable</h3>
+          <p>This week's class schedule</p>
+        </div>
+        <div class="quick-card">
+          <div class="quick-ic tint-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M14 10h4M14 14h3"/></svg></div>
+          <h3>ID Card</h3>
+          <p>Digital campus ID & access pass</p>
+        </div>
+        <div class="quick-card">
+          <div class="quick-ic tint-4"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <h3>E-Portfolio</h3>
+          <p>Showcase projects & certificates</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two column -->
+    <section class="two-col">
+      <div class="panel">
+        <div class="section-head">
+          <h2>Announcements</h2>
+          <a href="#">View all</a>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:var(--coral)"></span>
+          <div>
+            <h4>Fee payment deadline extended</h4>
+            <span>Last date for semester fee moved to Aug 5</span>
+          </div>
+          <span class="when">2h ago</span>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:var(--gold)"></span>
+          <div>
+            <h4>Internal assessment II schedule released</h4>
+            <span>Check Exam Schedules for your slot</span>
+          </div>
+          <span class="when">1d ago</span>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:var(--violet-600)"></span>
+          <div>
+            <h4>Placement drive &mdash; TCS &amp; Infosys</h4>
+            <span>Register under Scholarship &amp; Careers by Aug 2</span>
+          </div>
+          <span class="when">2d ago</span>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:#1C8A5A"></span>
+          <div>
+            <h4>Independence Day &mdash; campus holiday</h4>
+            <span>College closed on Aug 15</span>
+          </div>
+          <span class="when">3d ago</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-head">
+          <h2>Today's Classes</h2>
+          <a href="#">Full timetable</a>
+        </div>
+        <div class="day-row">
+          <div class="day-time">9:00 AM</div>
+          <div class="day-info">
+            <h4>Data Structures</h4>
+            <span>Room 204 &middot; Prof. Meenakshi</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-time">11:00 AM</div>
+          <div class="day-info">
+            <h4>Operating Systems</h4>
+            <span>Lab 3 &middot; Prof. Karthik</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-time">1:30 PM</div>
+          <div class="day-info">
+            <h4>Discrete Mathematics</h4>
+            <span>Room 108 &middot; Prof. Iyer</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-time">3:00 PM</div>
+          <div class="day-info">
+            <h4>Student Counselling</h4>
+            <span>Room 12 &middot; Slot B</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuToggle = document.getElementById('menuToggle');
+  const closeBtn = document.getElementById('closeBtn');
+
+  function openSidebar(){
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+  menuToggle.addEventListener('click', openSidebar);
+  closeBtn.addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // Enrollment submenu accordion
+  const enrollToggle = document.getElementById('enrollToggle');
+  const enrollSub = document.getElementById('enrollSub');
+  enrollToggle.addEventListener('click', () => {
+    enrollToggle.classList.toggle('open');
+    enrollSub.classList.toggle('open');
+  });
+
+  // Active nav item state
+  document.querySelectorAll('.nav-item:not(.has-sub)').forEach(item => {
+    item.addEventListener('click', (e) => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      if (window.innerWidth <= 880) closeSidebar();
+    });
+  });
+</script>
+
+</body>
+</html>
