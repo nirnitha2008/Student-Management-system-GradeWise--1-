@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="shell">
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div class="brand-text">
+          <div class="name">Rathinam College</div>
+          <div class="sub">Student Portal</div>
+        </div>
+      </div>
+      <button class="close-btn" id="closeBtn" aria-label="Close menu">✕</button>
+    </div>
+
+    <div class="launch-row">
+      <a class="launch-chip" href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Koha
+      </a>
+      <a class="launch-chip" href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        PI360
+      </a>
+    </div>
+
+    <div class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search menu...">
+    </div>
+
+    <nav class="menu">
+      <div class="menu-group">
+        <div class="group-label">Overview</div>
+        <a class="nav-item active" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+          My Institution
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          My Learning
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Messages
+          <span class="badge">4</span>
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Academics</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Timetable
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Attendance
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Assignments
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+          Exam Schedules
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 3 4 5-8"/></svg>
+          Overall Grade
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Assessments
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Teaching Content
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Transcript
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Services</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Holidays
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+          Leave
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.9.4-1.5 1-1.5 2.2M12 17h.01"/></svg>
+          Services
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          Billing
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+          Student Counselling
+        </a>
+        <div class="nav-item has-sub" id="enrollToggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Enrollment
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="submenu" id="enrollSub">
+          <a class="nav-item" href="#">Semester Enrollment</a>
+          <a class="nav-item" href="#">Pre-enlistment</a>
+          <a class="nav-item" href="#">Curriculum</a>
+        </div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Clearance
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Scholarship
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Campus Life</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>
+          Activity
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+          Announcement
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M17 8l4 4-4 4"/></svg>
+          Engage
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Project
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Feedback
+        </a>
+      </div>
+
+      <div class="menu-group">
+        <div class="group-label">Records</div>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          Reports
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h4M17 12h4M12 3v4M12 17v4"/></svg>
+          Proctortrack
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          E-Portfolio
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Final Result
+        </a>
+        <a class="nav-item" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M14 10h4M14 14h3"/></svg>
+          ID Card
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="avatar-sm">AK</div>
+      <div class="who">
+        <div class="n">Aravind Kumar</div>
+        <div class="r">III B.Sc CS &middot; 21CS045</div>
+      </div>
+      <button class="logout-btn" title="Log out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search attendance, assignments, results...">
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+        <div class="top-avatar">AK</div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Odd Semester &middot; 2026</div>
+          <h1>Good afternoon, Aravind.</h1>
+          <p>You have 2 assignments due this week and a fee installment pending. Your attendance is holding steady above the eligibility line.</p>
+          <div class="hero-cta">
+            <button class="btn btn-gold">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              View Assignments
+            </button>
+            <button class="btn btn-ghost">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              Pay Fees
+            </button>
+          </div>
+        </div>
+
+        <div class="ring-card">
+          <svg class="ring" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="33" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="9"/>
+            <circle cx="40" cy="40" r="33" fill="none" stroke="#F0B429" stroke-width="9" stroke-linecap="round"
+              stroke-dasharray="207.3" stroke-dashoffset="41.5" transform="rotate(-90 40 40)"/>
+            <text x="40" y="46" text-anchor="middle" fill="#fff" font-size="18" font-weight="700" font-family="Fraunces, serif">80%</text>
+          </svg>
+          <div>
+            <div class="ring-label">Attendance</div>
+            <div class="ring-value">Eligible <span>&middot; min 75%</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stat strip -->
+    <section class="stat-strip">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-1">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          <span class="stat-trend trend-warn">2 due</span>
+        </div>
+        <div class="stat-num">5</div>
+        <div class="stat-label">Assignments this term</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-2">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <span class="stat-trend trend-flat">Sep 14</span>
+        </div>
+        <div class="stat-num">12 days</div>
+        <div class="stat-label">Until exams begin</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-3">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          </div>
+          <span class="stat-trend trend-warn">Due Aug 5</span>
+        </div>
+        <div class="stat-num">&#8377;12,400</div>
+        <div class="stat-label">Fee balance</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon tint-4">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 3 4 5-8"/></svg>
+          </div>
+          <span class="stat-trend trend-up">+0.3</span>
+        </div>
+        <div class="stat-num">8.4 CGPA</div>
+        <div class="stat-label">Overall grade</div>
+      </div>
+    </section>
+
+    <!-- Quick access -->
+    <section>
+      <div class="section-head">
+        <h2>Quick Access</h2>
+        <a href="#">Customize</a>
+      </div>
+      <div class="quick-grid">
+        <div class="quick-card">
+          <div class="quick-ic tint-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <h3>Attendance</h3>
+          <p>Daily & subject-wise attendance log</p>
+        </div>
+        <div class="quick-card">
+          <div class="quick-ic tint-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <h3>Timetable</h3>
+          <p>This week's class schedule</p>
+        </div>
+        <div class="quick-card">
+          <div class="quick-ic tint-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M14 10h4M14 14h3"/></svg></div>
+          <h3>ID Card</h3>
+          <p>Digital campus ID & access pass</p>
+        </div>
+        <div class="quick-card">
+          <div class="quick-ic tint-4"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <h3>E-Portfolio</h3>
+          <p>Showcase projects & certificates</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two column -->
+    <section class="two-col">
+      <div class="panel">
+        <div class="section-head">
+          <h2>Announcements</h2>
+          <a href="#">View all</a>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:var(--coral)"></span>
+          <div>
+            <h4>Fee payment deadline extended</h4>
+            <span>Last date for semester fee moved to Aug 5</span>
+          </div>
+          <span class="when">2h ago</span>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:var(--gold)"></span>
+          <div>
+            <h4>Internal assessment II schedule released</h4>
+            <span>Check Exam Schedules for your slot</span>
+          </div>
+          <span class="when">1d ago</span>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:var(--violet-600)"></span>
+          <div>
+            <h4>Placement drive &mdash; TCS &amp; Infosys</h4>
+            <span>Register under Scholarship &amp; Careers by Aug 2</span>
+          </div>
+          <span class="when">2d ago</span>
+        </div>
+        <div class="announce-item">
+          <span class="tag-dot" style="background:#1C8A5A"></span>
+          <div>
+            <h4>Independence Day &mdash; campus holiday</h4>
+            <span>College closed on Aug 15</span>
+          </div>
+          <span class="when">3d ago</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-head">
+          <h2>Today's Classes</h2>
+          <a href="#">Full timetable</a>
+        </div>
+        <div class="day-row">
+          <div class="day-time">9:00 AM</div>
+          <div class="day-info">
+            <h4>Data Structures</h4>
+            <span>Room 204 &middot; Prof. Meenakshi</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-time">11:00 AM</div>
+          <div class="day-info">
+            <h4>Operating Systems</h4>
+            <span>Lab 3 &middot; Prof. Karthik</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-time">1:30 PM</div>
+          <div class="day-info">
+            <h4>Discrete Mathematics</h4>
+            <span>Room 108 &middot; Prof. Iyer</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-time">3:00 PM</div>
+          <div class="day-info">
+            <h4>Student Counselling</h4>
+            <span>Room 12 &middot; Slot B</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
