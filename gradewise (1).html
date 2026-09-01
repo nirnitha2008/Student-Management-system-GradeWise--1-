@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GradeWise — Student Portal</title>
+<style>
+  :root{
+    --purple-900:#2a0e4d;
+    --purple-800:#3b1666;
+    --purple-700:#4c1d95;
+    --purple-600:#5b21b6;
+    --purple-500:#7c3aed;
+    --purple-400:#9061f9;
+    --gold:#f5b400;
+    --bg:#f6f4fb;
+    --card:#ffffff;
+    --ink:#221334;
+    --muted:#786a91;
+    --line:#ece7f6;
+    --danger:#e0553f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+  a{text-decoration:none;color:inherit;}
+
+  /* ---------- LOGIN ---------- */
+  #login-screen{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,#efe9fb 0%, #f7f2fb 60%, #f4eefb 100%);
+    padding:24px;
+  }
+  .login-box{width:100%;max-width:420px;text-align:center;}
+  .login-logo{
+    width:64px;height:64px;border-radius:16px;
+    background:linear-gradient(135deg,var(--purple-600),var(--purple-800));
+    display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+    font-size:28px;box-shadow:0 8px 20px rgba(76,29,149,.35);
+  }
+  .login-brand{font-size:26px;font-weight:800;color:#1f2d6b;}
+  .login-brand span{background:#3557d6;color:#fff;padding:0 6px;border-radius:3px;}
+  .login-sub{color:var(--muted);margin:6px 0 28px;font-size:14px;}
+  .login-card{background:var(--card);border-radius:20px;padding:28px;box-shadow:0 20px 40px rgba(80,40,140,.10);text-align:left;}
+  .field-label{font-size:11px;font-weight:700;letter-spacing:.06em;color:#5c4d78;margin-bottom:6px;display:block;}
+  .field{position:relative;margin-bottom:18px;}
+  .field input{
+    width:100%;padding:12px 14px 12px 38px;border-radius:12px;border:1px solid var(--line);
+    background:#faf9fd;font-size:14px;color:var(--ink);outline:none;
+  }
+  .field input:focus{border-color:var(--purple-500);}
+  .field .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#a99bc4;font-size:14px;}
+  .login-btn{
+    width:100%;padding:13px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,var(--purple-500),var(--purple-700));
+    color:#fff;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 10px 20px rgba(124,58,237,.30);
+  }
+  .login-btn:hover{filter:brightness(1.05);}
+  .login-foot{text-align:center;margin-top:16px;font-size:13px;color:var(--muted);}
+  .login-foot b{color:var(--purple-600);cursor:pointer;}
+
+  /* ---------- APP SHELL ---------- */
+  #app-screen{display:none;min-height:100vh;}
+  .shell{display:flex;min-height:100vh;}
+
+  .sidebar{
+    width:250px;flex-shrink:0;
+    background:linear-gradient(180deg,#3a1566 0%, #1c0b38 55%, #12071f 100%);
+    color:#e3d9f7;padding:18px 14px;display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+  }
+  .sb-brand{display:flex;align-items:center;gap:10px;padding:6px 6px 18px;}
+  .sb-logo{
+    width:36px;height:36px;border-radius:10px;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#3b1666;font-size:16px;
+  }
+  .sb-name{font-weight:800;font-size:15px;color:#fff;line-height:1.1;}
+  .sb-name small{display:block;font-size:9px;letter-spacing:.08em;color:#b8a6dd;font-weight:700;}
+  .sb-search{
+    background:rgba(255,255,255,.07);border-radius:10px;padding:9px 12px;font-size:12.5px;
+    color:#c8bbe6;margin-bottom:16px;
+  }
+  .sb-group-label{font-size:10px;letter-spacing:.09em;color:#8672ad;font-weight:700;margin:14px 8px 6px;}
+  .sb-item{
+    display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13.5px;
+    color:#d7cbef;cursor:pointer;margin-bottom:2px;position:relative;
+  }
+  .sb-item .ic{width:16px;text-align:center;font-size:13px;}
+  .sb-item:hover{background:rgba(255,255,255,.06);}
+  .sb-item.active{background:rgba(255,255,255,.14);color:#fff;font-weight:700;box-shadow:inset 3px 0 0 var(--gold);}
+  .sb-badge{
+    margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;
+    padding:1px 6px;border-radius:20px;
+  }
+  .sb-user{
+    margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px 8px 4px;
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+  .sb-avatar{width:32px;height:32px;border-radius:50%;background:var(--purple-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;}
+  .sb-user-name{font-size:12.5px;font-weight:700;color:#fff;}
+  .sb-user-sub{font-size:10.5px;color:#a996cf;}
+
+  .main{flex:1;min-width:0;padding:20px 26px 60px;}
+  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .search-bar{
+    flex:1;background:#fff;border-radius:12px;padding:10px 16px;font-size:13.5px;color:#9689ad;
+    box-shadow:0 2px 8px rgba(60,30,110,.05);border:1px solid var(--line);
+  }
+  .icon-btn{
+    width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(60,30,110,.05);border:1px solid var(--line);position:relative;font-size:14px;flex-shrink:0;
+  }
+  .icon-btn .dot{position:absolute;top:7px;right:8px;width:7px;height:7px;background:var(--danger);border-radius:50%;}
+  .avatar-btn{
+    width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple-500),var(--purple-700));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;
+  }
+
+  .banner{
+    background:linear-gradient(120deg,#6d28d9,#4c1d95 65%, #341066);
+    border-radius:20px;padding:26px 28px;color:#fff;position:relative;overflow:hidden;margin-bottom:18px;
+    display:flex;justify-content:space-between;align-items:center;gap:24px;
+  }
+  .banner-eyebrow{font-size:10.5px;letter-spacing:.1em;font-weight:700;color:#d9c8fb;text-transform:uppercase;}
+  .banner-title{font-size:24px;font-weight:800;margin:6px 0 8px;font-family:Georgia,'Times New Roman',serif;}
+  .banner-sub{font-size:13.5px;color:#e4d8fb;max-width:520px;line-height:1.5;}
+  .banner-actions{display:flex;gap:10px;margin-top:16px;}
+  .btn-gold{background:var(--gold);color:#3b1666;border:none;padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;}
+  .btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:none;padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;}
+  .banner-side{
+    background:rgba(0,0,0,.18);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;flex-shrink:0;
+  }
+  .ring{
+    width:56px;height:56px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;
+  }
+  .side-label{font-size:9.5px;letter-spacing:.08em;color:#d9c8fb;font-weight:700;}
+  .side-value{font-size:14px;font-weight:800;}
+
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+  .stat-card{
+    background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:0 2px 10px rgba(60,30,110,.05);
+    border:1px solid var(--line);
+  }
+  .stat-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+  .stat-icon{
+    width:32px;height:32px;border-radius:9px;background:#f1e9fd;color:var(--purple-600);
+    display:flex;align-items:center;justify-content:center;font-size:14px;
+  }
+  .stat-pill{background:#f4edff;color:var(--purple-600);font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .stat-num{font-size:24px;font-weight:800;font-family:Georgia,'Times New Roman',serif;}
+  .stat-label{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .panel{background:var(--card);border-radius:16px;padding:20px 22px;border:1px solid var(--line);box-shadow:0 2px 10px rgba(60,30,110,.05);}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .panel-title{font-size:15px;font-weight:800;}
+  .panel-link{font-size:12px;color:var(--purple-600);font-weight:700;cursor:pointer;}
+
+  .list-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);gap:10px;}
+  .list-row:last-child{border-bottom:none;}
+  .list-left{display:flex;align-items:center;gap:12px;min-width:0;}
+  .tag-chip{
+    width:34px;height:34px;border-radius:9px;background:#f1e9fd;color:var(--purple-600);
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;
+  }
+  .list-title{font-size:13.5px;font-weight:700;}
+  .list-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .list-right{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap;flex-shrink:0;}
+  .status-chip{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:20px;background:#f1e9fd;color:var(--purple-600);white-space:nowrap;}
+  .status-chip.warn{background:#fff2df;color:#a6690a;}
+  .status-chip.bad{background:#fde6e2;color:var(--danger);}
+  .status-chip.good{background:#e4f7ea;color:#1f8a4c;}
+
+  .bar-row{margin-bottom:14px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+  .bar-name{font-weight:700;}
+  .bar-val{font-weight:700;color:var(--purple-600);}
+  .bar-track{height:8px;background:#efe8fb;border-radius:20px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--purple-500),var(--purple-700));border-radius:20px;}
+  .bar-note{font-size:11px;color:var(--muted);margin-top:4px;}
+
+  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+  .quick-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(60,30,110,.05);cursor:pointer;}
+  .quick-icon{width:38px;height:38px;border-radius:10px;background:#f1e9fd;color:var(--purple-600);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px;}
+  .quick-title{font-weight:800;font-size:13.5px;}
+  .quick-sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+
+  .section-title{font-size:15px;font-weight:800;margin:22px 0 12px;}
+
+  @media (max-width:980px){
+    .sidebar{display:none;}
+    .stat-grid,.quick-grid{grid-template-columns:repeat(2,1fr);}
+    .two-col{grid-template-columns:1fr;}
+    .banner{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🎓</div>
+    <div class="login-brand"><span>GradeWise</span></div>
+    <div class="login-sub">Academic Attendance &amp; Performance Tracker</div>
+    <div class="login-card">
+      <label class="field-label">EMAIL</label>
+      <div class="field"><span class="icon">✉</span><input id="email" type="email" placeholder="you@college.edu"></div>
+      <label class="field-label">PASSWORD</label>
+      <div class="field"><span class="icon">🔒</span><input id="password" type="password" placeholder="••••••••"></div>
+      <button class="login-btn" onclick="doLogin()">Login</button>
+    </div>
+    <div class="login-foot">Don't have an account? <b>Register</b></div>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app-screen">
+  <div class="shell">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="main">
+      <div class="topbar">
+        <div class="search-bar">🔍&nbsp;&nbsp;Search classes, results, services...</div>
+        <div class="icon-btn">🔔<span class="dot"></span></div>
+        <div class="avatar-btn">N</div>
+      </div>
+      <div id="page-root"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ AUTH ============ */
+function doLogin(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
+  navigate('dashboard');
+}
+
+/* ============ NAV STRUCTURE ============ */
+const NAV = [
+  {group:'OVERVIEW', items:[
+    {id:'dashboard', label:'My Institution', ic:'🏛'},
+    {id:'my-learning', label:'My Learning', ic:'📖'},
+    {id:'messages', label:'Messages', ic:'💬', badge:4},
+  ]},
+  {group:'ACADEMICS', items:[
+    {id:'study-plan', label:'Study Plan', ic:'🎯'},
+    {id:'timetable', label:'Timetable', ic:'📅'},
+    {id:'attendance', label:'Attendance', ic:'🧑‍🎓'},
+    {id:'assignments', label:'Assignments', ic:'📋'},
+    {id:'exam-schedules', label:'Exam Schedules', ic:'🗓'},
+    {id:'overall-grade', label:'Overall Grade', ic:'⏱'},
+    {id:'assessments', label:'Assessments', ic:'📄'},
+    {id:'teaching-content', label:'Teaching Content', ic:'📚'},
+    {id:'transcript', label:'Transcript', ic:'📜'},
+  ]},
+  {group:'SERVICES', items:[
+    {id:'holidays', label:'Holidays', ic:'🏖'},
+    {id:'leave', label:'Leave', ic:'🗒'},
+    {id:'billing', label:'Billing', ic:'💳'},
+    {id:'counselling', label:'Student Counselling', ic:'🧭'},
+    {id:'enrollment', label:'Enrollment', ic:'🎓'},
+    {id:'scholarship', label:'Scholarship', ic:'🏆'},
+  ]},
+  {group:'CAMPUS LIFE', items:[
+    {id:'activity', label:'Activity', ic:'✨'},
+    {id:'announcement', label:'Announcement', ic:'📢'},
+    {id:'engage', label:'Engage', ic:'🌐'},
+    {id:'project', label:'Project', ic:'📁'},
+    {id:'feedback', label:'Feedback', ic:'💭'},
+  ]},
+  {group:'RECORDS', items:[
+    {id:'reports', label:'Reports', ic:'▦'},
+    {id:'eportfolio', label:'E-Portfolio', ic:'🗂'},
+    {id:'idcard', label:'ID Card', ic:'🪪'},
+  ]},
+];
+
+function renderSidebar(active){
+  const sb = document.getElementById('sidebar');
+  let html = `
+    <div class="sb-brand">
+      <div class="sb-logo">G</div>
+      <div class="sb-name">GradeWise<small>STUDENT PORTAL</small></div>
+    </div>
+    <div class="sb-search">🔍&nbsp; Search portal</div>
+  `;
+  NAV.forEach(g=>{
+    html += `<div class="sb-group-label">${g.group}</div>`;
+    g.items.forEach(it=>{
+      html += `<div class="sb-item ${it.id===active?'active':''}" onclick="navigate('${it.id}')">
+        <span class="ic">${it.ic}</span>${it.label}
+        ${it.badge?`<span class="sb-badge">${it.badge}</span>`:''}
+      </div>`;
+    });
+  });
+  html += `
+    <div class="sb-user">
+      <div class="sb-avatar">N</div>
+      <div>
+        <div class="sb-user-name">Nirnitha2008</div>
+        <div class="sb-user-sub">III B.Sc CS · 21CS045</div>
+      </div>
+    </div>
+  `;
+  sb.innerHTML = html;
+}
+
+/* ============ GENERIC PAGE DATA ============
+   Each page: banner{eyebrow,title,sub}, stats[4]{icon,pill,num,label},
+   left panel {title, link, rows:[{tag,title,sub,right,status}]}
+   right panel {title, bars:[{name,val,pct,note}]}
+*/
+const PAGES = {
+
+'my-learning': {
+  banner:{eyebrow:'ODD SEMESTER 2026 · WEEK 6', title:'My Learning', sub:'6 active courses, 2 certifications in progress and 18 lessons completed this week.'},
+  stats:[
+    {icon:'📘',num:'6',label:'Active courses'},
+    {icon:'✅',num:'18',label:'Lessons this week'},
+    {icon:'📈',num:'74%',label:'Average completion'},
+    {icon:'🏅',num:'2',label:'Certifications'},
+  ],
+  left:{title:'Continue learning', rows:[
+    {tag:'DS',title:'Trees & Graph traversal — Lesson 12',sub:'42 min left'},
+    {tag:'OS',title:'Deadlock avoidance — Lesson 8',sub:'25 min left'},
+    {tag:'DBMS',title:'Normalization workshop — Lesson 5',sub:'1 hr left'},
+    {tag:'DM',title:'Graph colouring — Lesson 14',sub:'18 min left'},
+    {tag:'PY',title:'Python for Data Analysis (NPTEL)',sub:'Week 4 of 8'},
+  ]},
+  right:{title:'Course completion', bars:[
+    {name:'Data Structures',pct:72},
+    {name:'Operating Systems',pct:54},
+    {name:'Discrete Mathematics',pct:88},
+    {name:'DBMS',pct:41},
+  ]}
+},
+
+'messages': {
+  banner:{eyebrow:'INBOX · 4 UNREAD', title:'Messages', sub:'Conversations with faculty, mentors and campus departments.'},
+  stats:[
+    {icon:'✉',num:'4',label:'Unread messages'},
+    {icon:'🧵',num:'12',label:'Active threads'},
+    {icon:'🎓',num:'3',label:'Faculty replies'},
+    {icon:'🏢',num:'1',label:'Department notice'},
+  ],
+  left:{title:'Recent conversations', rows:[
+    {tag:'PM',title:'Prof. Meenakshi — Assignment II feedback',sub:'',right:'2h ago'},
+    {tag:'AR',title:'Arun (Class rep) — Lab batch swap',sub:'',right:'5h ago'},
+    {tag:'AO',title:'Accounts Office — Fee receipt attached',sub:'',right:'1d ago'},
+    {tag:'DR',title:'Dr. Ramesh — Project review slot',sub:'',right:'2d ago'},
+    {tag:'PC',title:'Placement Cell — TCS drive shortlist',sub:'',right:'3d ago'},
+  ]},
+  right:{title:'Response activity', bars:[
+    {name:'Faculty',valLabel:'8 threads',pct:70},
+    {name:'Departments',valLabel:'3 threads',pct:35},
+    {name:'Peers',valLabel:'1 thread',pct:12},
+    {name:'Replied within 24h',valLabel:'82%',pct:82},
+  ]}
+},
+
+'timetable': {
+  banner:{eyebrow:'WEEK 6 · III B.SC CS', title:'Timetable', sub:'Six periods today, first class at 9:00 AM in Room 204.'},
+  stats:[
+    {icon:'📅',num:'6',label:'Periods today'},
+    {icon:'🗓',num:'28',label:'Periods this week'},
+    {icon:'🧪',num:'3',label:'Lab sessions'},
+    {icon:'⏰',num:'9:00 AM',label:'First class'},
+  ],
+  left:{title:"Today's schedule", rows:[
+    {tag:'9:00',title:'Data Structures — Room 204',sub:'Prof. Meenakshi'},
+    {tag:'10:00',title:'Operating Systems — Room 118',sub:'Dr. Ramesh'},
+    {tag:'11:15',title:'Discrete Mathematics — Room 204',sub:'Prof. Kavitha'},
+    {tag:'1:30',title:'DBMS Lab — Lab 3',sub:'Prof. Suresh'},
+    {tag:'3:00',title:'Soft Skills — Seminar Hall',sub:'Ms. Divya'},
+  ]},
+  right:{title:'Weekly load by subject', bars:[
+    {name:'Data Structures',valLabel:'7 hrs',pct:70},
+    {name:'Operating Systems',valLabel:'6 hrs',pct:60},
+    {name:'DBMS',valLabel:'6 hrs',pct:60},
+    {name:'Discrete Mathematics',valLabel:'5 hrs',pct:50},
+  ]}
+},
+
+'attendance': {
+  banner:{eyebrow:'SEMESTER TO DATE', title:'Attendance', sub:'Overall attendance is 92% — comfortably above the 75% requirement.'},
+  stats:[
+    {icon:'📊',num:'92%',label:'Overall attendance'},
+    {icon:'🚫',num:'8',label:'Days absent'},
+    {icon:'⚠',num:'2',label:'Below 80% subjects'},
+    {icon:'📐',num:'75%',label:'Minimum required'},
+  ],
+  left:{title:'Recent absences', rows:[
+    {tag:'Jul28',title:'Operating Systems — Period 2',sub:'Medical leave'},
+    {tag:'Jul21',title:'DBMS Lab — Afternoon',sub:'Approved'},
+    {tag:'Jul14',title:'Discrete Mathematics — Period 3',sub:'Unexcused'},
+    {tag:'Jul02',title:'Full day',sub:'Sports meet'},
+  ]},
+  right:{title:'Subject-wise attendance', bars:[
+    {name:'Data Structures',pct:95},
+    {name:'Operating Systems',pct:78},
+    {name:'Discrete Mathematics',pct:90},
+    {name:'DBMS',pct:74},
+  ]}
+},
+
+'assignments': {
+  banner:{eyebrow:'5 ACTIVE · 2 DUE THIS WEEK', title:'Assignments', sub:'Two submissions are due within the next 4 days.'},
+  stats:[
+    {icon:'📋',num:'5',label:'Active assignments'},
+    {icon:'📅',num:'2',label:'Due this week'},
+    {icon:'✅',num:'11',label:'Submitted'},
+    {icon:'📈',num:'88%',label:'Average score'},
+  ],
+  left:{title:'Upcoming submissions', rows:[
+    {tag:'Aug06',title:'DS — AVL tree implementation',sub:'Not started'},
+    {tag:'Aug08',title:"OS — Banker's algorithm report",sub:'In progress'},
+    {tag:'Aug12',title:'DBMS — ER to relational mapping',sub:'In progress'},
+    {tag:'Aug18',title:'DM — Graph theory problem set',sub:'Not started'},
+  ]},
+  right:{title:'Marks by subject', bars:[
+    {name:'Data Structures',valLabel:'92 / 100',pct:92},
+    {name:'Operating Systems',valLabel:'85 / 100',pct:85},
+    {name:'Discrete Mathematics',valLabel:'90 / 100',pct:90},
+    {name:'DBMS',valLabel:'79 / 100',pct:79},
+  ]}
+},
+
+'exam-schedules': {
+  banner:{eyebrow:'INTERNAL ASSESSMENT II', title:'Exam Schedules', sub:'Exams begin in 12 days. Hall tickets are released one week prior.'},
+  stats:[
+    {icon:'⏳',num:'12 days',label:'Until exams'},
+    {icon:'📄',num:'5',label:'Papers'},
+    {icon:'🏫',num:'B-Block',label:'Exam hall'},
+    {icon:'💺',num:'S-042',label:'Seat number'},
+  ],
+  left:{title:'Exam date sheet', rows:[
+    {tag:'Sep14',title:'Data Structures',sub:'10:00 AM · B-204'},
+    {tag:'Sep16',title:'Operating Systems',sub:'10:00 AM · B-204'},
+    {tag:'Sep18',title:'Discrete Mathematics',sub:'2:00 PM · B-118'},
+    {tag:'Sep20',title:'DBMS',sub:'10:00 AM · B-204'},
+    {tag:'Sep22',title:'Soft Skills (Viva)',sub:'9:00 AM · Seminar Hall'},
+  ]},
+  right:{title:'Preparation readiness', bars:[
+    {name:'Data Structures',valLabel:'Ready',pct:95},
+    {name:'Operating Systems',valLabel:'Revising',pct:60},
+    {name:'Discrete Mathematics',valLabel:'Ready',pct:92},
+    {name:'DBMS',valLabel:'Needs work',pct:35},
+  ]}
+},
+
+'overall-grade': {
+  banner:{eyebrow:'CGPA 8.4 · SEMESTER 5', title:'Overall Grade', sub:'CGPA improved by 0.3 points compared with the previous semester.'},
+  stats:[
+    {icon:'🎓',num:'8.4',label:'Current CGPA'},
+    {icon:'📘',num:'8.7',label:'Semester GPA'},
+    {icon:'📈',num:'+0.3',label:'Change vs last sem'},
+    {icon:'🅰',num:'A',label:'Highest grade'},
+  ],
+  left:{title:'Semester-wise GPA', rows:[
+    {tag:'Sem5',title:'Current semester',sub:'8.7 GPA'},
+    {tag:'Sem4',title:'Even 2025',sub:'8.4 GPA'},
+    {tag:'Sem3',title:'Odd 2025',sub:'8.1 GPA'},
+    {tag:'Sem2',title:'Even 2024',sub:'8.3 GPA'},
+    {tag:'Sem1',title:'Odd 2024',sub:'8.0 GPA'},
+  ]},
+  right:{title:'Grade distribution', bars:[
+    {name:'Data Structures',valLabel:'A',pct:95},
+    {name:'Discrete Mathematics',valLabel:'A',pct:93},
+    {name:'Operating Systems',valLabel:'B+',pct:78},
+    {name:'DBMS',valLabel:'B',pct:70},
+  ]}
+},
+
+'assessments': {
+  banner:{eyebrow:'INTERNAL ASSESSMENTS & QUIZZES', title:'Assessments', sub:'Two internal assessments completed, one mock test scheduled this Saturday.'},
+  stats:[
+    {icon:'✅',num:'2',label:'Assessments done'},
+    {icon:'📊',num:'84%',label:'Average marks'},
+    {icon:'📝',num:'1',label:'Upcoming test'},
+    {icon:'❓',num:'9',label:'Quizzes attempted'},
+  ],
+  left:{title:'Assessment history', rows:[
+    {tag:'IA-II',title:'Data Structures',sub:'46 / 50'},
+    {tag:'IA-II',title:'Operating Systems',sub:'39 / 50'},
+    {tag:'IA-I',title:'Discrete Mathematics',sub:'45 / 50'},
+    {tag:'IA-I',title:'DBMS',sub:'35 / 50'},
+    {tag:'Quiz',title:'Weekly DS quiz #6',sub:'18 / 20'},
+  ]},
+  right:{title:'Assessment averages', bars:[
+    {name:'Data Structures',valLabel:'92%',pct:92},
+    {name:'Discrete Mathematics',valLabel:'90%',pct:90},
+    {name:'Operating Systems',valLabel:'78%',pct:78},
+    {name:'DBMS',valLabel:'70%',pct:70},
+  ]}
+},
+
+'teaching-content': {
+  banner:{eyebrow:'NOTES, SLIDES & RECORDINGS', title:'Teaching Content', sub:'42 resources shared by faculty this semester, 6 added this week.'},
+  stats:[
+    {icon:'📚',num:'42',label:'Total resources'},
+    {icon:'🆕',num:'6',label:'Added this week'},
+    {icon:'🎥',num:'11',label:'Recordings'},
+    {icon:'🧪',num:'4',label:'Lab manuals'},
+  ],
+  left:{title:'Recently shared', rows:[
+    {tag:'PDF',title:'DS — Unit 4 tree notes',sub:'Prof. Meenakshi · 2d'},
+    {tag:'PPT',title:'OS — Deadlock slide deck',sub:'Dr. Ramesh · 3d'},
+    {tag:'MP4',title:'DBMS — Normalization lecture',sub:'Prof. Suresh · 4d'},
+    {tag:'PDF',title:'DM — Graph theory workbook',sub:'Prof. Kavitha · 5d'},
+  ]},
+  right:{title:'Resources per subject', bars:[
+    {name:'Data Structures',valLabel:'14 files',pct:80},
+    {name:'Operating Systems',valLabel:'11 files',pct:63},
+    {name:'DBMS',valLabel:'10 files',pct:57},
+    {name:'Discrete Mathematics',valLabel:'7 files',pct:40},
+  ]}
+},
+
+'transcript': {
+  banner:{eyebrow:'OFFICIAL ACADEMIC RECORD', title:'Transcript', sub:'Consolidated marks for 4 completed semesters. Downloadable copies are e-signed.'},
+  stats:[
+    {icon:'🎓',num:'96',label:'Credits earned'},
+    {icon:'📆',num:'4',label:'Semesters completed'},
+    {icon:'📈',num:'8.4',label:'CGPA'},
+    {icon:'0️⃣',num:'0',label:'Backlogs'},
+  ],
+  left:{title:'Semester records', rows:[
+    {tag:'Sem4',title:'24 credits · 8.4 GPA',sub:'Passed'},
+    {tag:'Sem3',title:'24 credits · 8.1 GPA',sub:'Passed'},
+    {tag:'Sem2',title:'24 credits · 8.5 GPA',sub:'Passed'},
+    {tag:'Sem1',title:'24 credits · 8.0 GPA',sub:'Passed'},
+  ]},
+  right:{title:'Credit completion', bars:[
+    {name:'Core courses',valLabel:'60 / 72',pct:83},
+    {name:'Electives',valLabel:'18 / 24',pct:75},
+    {name:'Labs',valLabel:'12 / 16',pct:75},
+    {name:'Value-added',valLabel:'6 / 8',pct:75},
+  ]}
+},
+
+'holidays': {
+  banner:{eyebrow:'ACADEMIC CALENDAR 2026', title:'Holidays', sub:'Next campus holiday is Independence Day on Aug 15.'},
+  stats:[
+    {icon:'🏖',num:'18',label:'Holidays this year'},
+    {icon:'⏳',num:'10 days',label:'Until next holiday'},
+    {icon:'🎉',num:'3',label:'Long weekends'},
+    {icon:'❄',num:'Dec 22',label:'Winter break starts'},
+  ],
+  left:{title:'Upcoming holidays', rows:[
+    {tag:'Aug15',title:'Independence Day',sub:'Campus closed'},
+    {tag:'Sep05',title:"Teachers' Day",sub:'Half day'},
+    {tag:'Oct02',title:'Gandhi Jayanti',sub:'Campus closed'},
+    {tag:'Oct20',title:'Deepavali',sub:'3-day break'},
+    {tag:'Dec25',title:'Christmas',sub:'Winter break'},
+  ]},
+  right:{title:'Holidays by term', bars:[
+    {name:'Odd semester',valLabel:'9 days',pct:45},
+    {name:'Even semester',valLabel:'7 days',pct:35},
+    {name:'Vacation',valLabel:'24 days',pct:100},
+    {name:'Restricted',valLabel:'2 days',pct:10},
+  ]}
+},
+
+'leave': {
+  banner:{eyebrow:'LEAVE REQUESTS & BALANCE', title:'Leave', sub:'One request is pending mentor approval; 7 leave days remain this semester.'},
+  stats:[
+    {icon:'🗓',num:'7',label:'Days remaining'},
+    {icon:'⏳',num:'1',label:'Pending approval'},
+    {icon:'✅',num:'3',label:'Approved this term'},
+    {icon:'❌',num:'0',label:'Rejected'},
+  ],
+  left:{title:'Leave history', rows:[
+    {tag:'Aug09',title:'Family function — 1 day',sub:'Pending'},
+    {tag:'Jul28',title:'Medical leave — 2 days',sub:'Approved'},
+    {tag:'Jul02',title:'Inter-college sports meet',sub:'Approved'},
+    {tag:'Jun18',title:'Personal — 1 day',sub:'Approved'},
+  ]},
+  right:{title:'Leave utilisation', bars:[
+    {name:'Medical',valLabel:'2 / 6',pct:33},
+    {name:'Personal',valLabel:'2 / 6',pct:33},
+    {name:'On-duty',valLabel:'1 / 4',pct:25},
+    {name:'Total used',valLabel:'5 / 12',pct:42},
+  ]}
+},
+
+'billing': {
+  banner:{eyebrow:'FEES & PAYMENTS', title:'Billing', sub:'A balance of ₹12,400 is due on Aug 5 for the current semester.'},
+  stats:[
+    {icon:'💳',num:'₹12,400',label:'Balance due'},
+    {icon:'📅',num:'Aug 5',label:'Due date'},
+    {icon:'💰',num:'₹48,600',label:'Paid this year'},
+    {icon:'🧾',num:'4',label:'Receipts'},
+  ],
+  left:{title:'Payment history', rows:[
+    {tag:'Jul10',title:'Semester tuition — instalment 2',sub:'₹24,000 paid'},
+    {tag:'Jun12',title:'Lab & library fee',sub:'₹4,600 paid'},
+    {tag:'Apr08',title:'Semester tuition — instalment 1',sub:'₹20,000 paid'},
+    {tag:'Mar15',title:'Exam fee',sub:'₹1,800 paid'},
+  ]},
+  right:{title:'Fee breakdown', bars:[
+    {name:'Tuition',valLabel:'₹44,000',pct:100},
+    {name:'Hostel',valLabel:'₹10,000',pct:23},
+    {name:'Lab & library',valLabel:'₹4,600',pct:10},
+    {name:'Exam & misc',valLabel:'₹2,400',pct:5},
+  ]}
+},
+
+'counselling': {
+  banner:{eyebrow:'WELLBEING & MENTORING', title:'Student Counselling', sub:'Your mentor Dr. Ramesh has an open slot this Thursday at 3:00 PM.'},
+  stats:[
+    {icon:'🗣',num:'3',label:'Sessions attended'},
+    {icon:'📅',num:'1',label:'Upcoming session'},
+    {icon:'🧑‍🏫',num:'Dr. Ramesh',label:'Assigned mentor'},
+    {icon:'☎',num:'24/7',label:'Helpline'},
+  ],
+  left:{title:'Sessions', rows:[
+    {tag:'Aug07',title:'Career guidance — Dr. Ramesh',sub:'3:00 PM · Booked'},
+    {tag:'Jul15',title:'Academic review',sub:'Completed'},
+    {tag:'Jun20',title:'Stress management workshop',sub:'Completed'},
+    {tag:'May28',title:'Mentor check-in',sub:'Completed'},
+  ]},
+  right:{title:'Wellbeing check-in', bars:[
+    {name:'Academic confidence',valLabel:'Good',pct:80},
+    {name:'Workload balance',valLabel:'Moderate',pct:55},
+    {name:'Sleep routine',valLabel:'Improving',pct:60},
+    {name:'Peer support',valLabel:'Strong',pct:88},
+  ]}
+},
+
+'enrollment': {
+  banner:{eyebrow:'COURSE REGISTRATION', title:'Enrollment', sub:'Registration for the next semester opens Sep 1. 24 credits to select.'},
+  stats:[
+    {icon:'📘',num:'6',label:'Enrolled courses'},
+    {icon:'🎯',num:'24',label:'Credits this sem'},
+    {icon:'📅',num:'Sep 1',label:'Registration opens'},
+    {icon:'➕',num:'2',label:'Electives to pick'},
+  ],
+  left:{title:'Enrolled courses', rows:[
+    {tag:'CS301',title:'Data Structures',sub:'4 credits · Core'},
+    {tag:'CS302',title:'Operating Systems',sub:'4 credits · Core'},
+    {tag:'MA303',title:'Discrete Mathematics',sub:'4 credits · Core'},
+    {tag:'CS304',title:'Database Management Systems',sub:'4 credits · Core'},
+  ]},
+  right:{title:'Credit requirement', bars:[
+    {name:'Core',valLabel:'16 / 16',pct:100},
+    {name:'Labs',valLabel:'4 / 4',pct:100},
+    {name:'Electives',valLabel:'2 / 4',pct:50},
+    {name:'Value-added',valLabel:'2 / 2',pct:100},
+  ]}
+},
+
+'scholarship': {
+  banner:{eyebrow:'AWARDS & FINANCIAL AID', title:'Scholarship', sub:'One merit scholarship is active; a state aid application is under review.'},
+  stats:[
+    {icon:'💰',num:'₹25,000',label:'Awarded this year'},
+    {icon:'🏆',num:'1',label:'Active scholarship'},
+    {icon:'⏳',num:'1',label:'Under review'},
+    {icon:'🎓',num:'8.4',label:'CGPA eligibility'},
+  ],
+  left:{title:'Applications', rows:[
+    {tag:'2026',title:'Merit scholarship — Top 10%',sub:'₹25,000 · Disbursed'},
+    {tag:'2026',title:'State education aid',sub:'Under review'},
+    {tag:'2025',title:'Sports achievement grant',sub:'₹8,000 · Disbursed'},
+    {tag:'2025',title:'Alumni bursary',sub:'Not selected'},
+  ]},
+  right:{title:'Eligibility snapshot', bars:[
+    {name:'CGPA criteria',valLabel:'8.4 / 8.0',pct:100},
+    {name:'Attendance criteria',valLabel:'92% / 85%',pct:100},
+    {name:'Documents submitted',valLabel:'5 / 6',pct:83},
+    {name:'Review progress',valLabel:'60%',pct:60},
+  ]}
+},
+
+'activity': {
+  banner:{eyebrow:'CLUBS & CAMPUS EVENTS', title:'Activity', sub:'You are part of 3 clubs with 2 events happening this month.'},
+  stats:[
+    {icon:'🎭',num:'3',label:'Clubs joined'},
+    {icon:'📅',num:'2',label:'Events this month'},
+    {icon:'⭐',num:'45',label:'Activity points'},
+    {icon:'📜',num:'7',label:'Certificates'},
+  ],
+  left:{title:'Upcoming activities', rows:[
+    {tag:'Aug12',title:'Coding Club — Hackathon prep',sub:'5:00 PM · Lab 2'},
+    {tag:'Aug19',title:'Literary Club — Debate finals',sub:'3:30 PM · Auditorium'},
+    {tag:'Aug26',title:'NSS — Blood donation camp',sub:'9:00 AM · Ground'},
+    {tag:'Sep02',title:'Tech Symposium volunteering',sub:'All day'},
+  ]},
+  right:{title:'Activity points', bars:[
+    {name:'Technical',valLabel:'20 pts',pct:100},
+    {name:'Cultural',valLabel:'12 pts',pct:60},
+    {name:'Sports',valLabel:'8 pts',pct:40},
+    {name:'Social service',valLabel:'5 pts',pct:25},
+  ]}
+},
+
+'announcement': {
+  banner:{eyebrow:'CAMPUS NOTICE BOARD', title:'Announcement', sub:'4 new notices posted this week from academics, accounts and placements.'},
+  stats:[
+    {icon:'🆕',num:'4',label:'New this week'},
+    {icon:'⚠',num:'2',label:'Action required'},
+    {icon:'📋',num:'16',label:'Total notices'},
+    {icon:'🔴',num:'1',label:'Urgent'},
+  ],
+  left:{title:'Latest notices', rows:[
+    {tag:'2h',title:'Fee payment deadline extended to Aug 5',sub:'Accounts'},
+    {tag:'1d',title:'Internal assessment II schedule released',sub:'Exams'},
+    {tag:'2d',title:'Placement drive — TCS & Infosys',sub:'Placements'},
+    {tag:'3d',title:'Independence Day — campus holiday',sub:'Administration'},
+  ]},
+  right:{title:'Notices by department', bars:[
+    {name:'Academics',valLabel:'7 notices',pct:100},
+    {name:'Accounts',valLabel:'4 notices',pct:57},
+    {name:'Placements',valLabel:'3 notices',pct:43},
+    {name:'Administration',valLabel:'2 notices',pct:28},
+  ]}
+},
+
+'engage': {
+  banner:{eyebrow:'PEER & FACULTY ENGAGEMENT', title:'Engage', sub:'Discussion forums, study groups and mentorship connections.'},
+  stats:[
+    {icon:'👥',num:'5',label:'Study groups'},
+    {icon:'💬',num:'23',label:'Forum posts'},
+    {icon:'🧑‍🏫',num:'2',label:'Mentees'},
+    {icon:'📈',num:'91',label:'Engagement score'},
+  ],
+  left:{title:'Active discussions', rows:[
+    {tag:'DS',title:'Best approach for AVL deletion?',sub:'12 replies'},
+    {tag:'OS',title:"Banker's algorithm doubt thread",sub:'8 replies'},
+    {tag:'GEN',title:'Placement prep resources 2026',sub:'31 replies'},
+    {tag:'DBMS',title:'Normalization vs performance',sub:'6 replies'},
+  ]},
+  right:{title:'Engagement breakdown', bars:[
+    {name:'Forum activity',valLabel:'High',pct:88},
+    {name:'Group participation',valLabel:'Steady',pct:65},
+    {name:'Mentoring',valLabel:'Active',pct:75},
+    {name:'Event volunteering',valLabel:'Moderate',pct:50},
+  ]}
+},
+
+'project': {
+  banner:{eyebrow:'MINI PROJECT · SEMESTER 5', title:'Project', sub:'Campus Portal project is 65% complete with review 2 due Aug 20.'},
+  stats:[
+    {icon:'📊',num:'65%',label:'Completion'},
+    {icon:'👥',num:'4',label:'Team members'},
+    {icon:'📅',num:'Aug 20',label:'Next review'},
+    {icon:'🏁',num:'2 / 4',label:'Milestones done'},
+  ],
+  left:{title:'Milestones', rows:[
+    {tag:'M1',title:'Problem statement & SRS',sub:'Approved'},
+    {tag:'M2',title:'Design & database schema',sub:'Approved'},
+    {tag:'M3',title:'Module implementation',sub:'In progress'},
+    {tag:'M4',title:'Testing & final demo',sub:'Not started'},
+  ]},
+  right:{title:'Module progress', bars:[
+    {name:'Frontend',pct:80},
+    {name:'Backend',pct:65},
+    {name:'Database',pct:70},
+    {name:'Documentation',pct:35},
+  ]}
+},
+
+'feedback': {
+  banner:{eyebrow:'COURSE & FACULTY FEEDBACK', title:'Feedback', sub:'Feedback for 2 of 6 courses is still pending; the window closes Aug 15.'},
+  stats:[
+    {icon:'✅',num:'4 / 6',label:'Courses submitted'},
+    {icon:'⏳',num:'2',label:'Pending'},
+    {icon:'📅',num:'Aug 15',label:'Window closes'},
+    {icon:'🕶',num:'100%',label:'Anonymous'},
+  ],
+  left:{title:'Feedback forms', rows:[
+    {tag:'CS301',title:'Data Structures — Prof. Meenakshi',sub:'Submitted'},
+    {tag:'CS302',title:'Operating Systems — Dr. Ramesh',sub:'Submitted'},
+    {tag:'CS304',title:'DBMS — Prof. Suresh',sub:'Pending'},
+    {tag:'MA303',title:'Discrete Mathematics — Prof. Kavitha',sub:'Pending'},
+  ]},
+  right:{title:'Your average ratings', bars:[
+    {name:'Teaching quality',valLabel:'4.6 / 5',pct:92},
+    {name:'Course material',valLabel:'4.2 / 5',pct:84},
+    {name:'Lab facilities',valLabel:'3.8 / 5',pct:76},
+    {name:'Campus support',valLabel:'4.0 / 5',pct:80},
+  ]}
+},
+
+'reports': {
+  banner:{eyebrow:'ACADEMIC REPORTS', title:'Reports', sub:'Downloadable performance, attendance and fee reports for the semester.'},
+  stats:[
+    {icon:'▦',num:'9',label:'Reports available'},
+    {icon:'🆕',num:'3',label:'Generated this term'},
+    {icon:'📄',num:'PDF',label:'Export format'},
+    {icon:'📅',num:'Aug 01',label:'Last generated'},
+  ],
+  left:{title:'Available reports', rows:[
+    {tag:'PDF',title:'Semester performance report',sub:'Updated Aug 1'},
+    {tag:'PDF',title:'Attendance summary — Sem 5',sub:'Updated Jul 31'},
+    {tag:'PDF',title:'Fee statement 2025-26',sub:'Updated Jul 10'},
+    {tag:'PDF',title:'Activity points certificate',sub:'Updated Jun 28'},
+  ]},
+  right:{title:'Report highlights', bars:[
+    {name:'Academic score',valLabel:'87%',pct:87},
+    {name:'Attendance',valLabel:'92%',pct:92},
+    {name:'Assignment submission',valLabel:'94%',pct:94},
+    {name:'Fee compliance',valLabel:'80%',pct:80},
+  ]}
+},
+
+'eportfolio': {
+  banner:{eyebrow:'PROJECTS, SKILLS & CERTIFICATES', title:'E-Portfolio', sub:'Your portfolio is 78% complete — add two more certificates to reach 100%.'},
+  stats:[
+    {icon:'📊',num:'78%',label:'Profile strength'},
+    {icon:'📁',num:'6',label:'Projects'},
+    {icon:'📜',num:'9',label:'Certificates'},
+    {icon:'🛠',num:'14',label:'Skills listed'},
+  ],
+  left:{title:'Portfolio items', rows:[
+    {tag:'PRJ',title:'Campus Portal — React & TypeScript',sub:'2026'},
+    {tag:'PRJ',title:'Library management system',sub:'2025'},
+    {tag:'CERT',title:'NPTEL — Python for Data Analysis',sub:'Elite'},
+    {tag:'CERT',title:'Coursera — SQL for Data Science',sub:'Completed'},
+  ]},
+  right:{title:'Skill strength', bars:[
+    {name:'Java',valLabel:'Advanced',pct:90},
+    {name:'Python',valLabel:'Advanced',pct:88},
+    {name:'SQL',valLabel:'Intermediate',pct:60},
+    {name:'React',valLabel:'Intermediate',pct:55},
+  ]}
+},
+
+'idcard': {
+  banner:{eyebrow:'DIGITAL CAMPUS IDENTITY', title:'ID Card', sub:'Your digital ID is valid until May 2027 and works for library and gate access.'},
+  stats:[
+    {icon:'🪪',num:'21CS045',label:'Roll number'},
+    {icon:'📅',num:'May 2027',label:'Valid until'},
+    {icon:'🔑',num:'4',label:'Access zones'},
+    {icon:'🟢',num:'Active',label:'Card status'},
+  ],
+  left:{title:'Card details', rows:[
+    {tag:'👤',title:'III B.Sc Computer Science',sub:'Section A'},
+    {tag:'🔑',title:'Library, Labs, Hostel, Main gate',sub:'Enabled'},
+    {tag:'🩸',title:'O+',sub:'On record'},
+    {tag:'☎',title:'+91 98xxx xxx45',sub:'Guardian'},
+  ]},
+  right:{title:'Access usage this month', bars:[
+    {name:'Library',valLabel:'18 entries',pct:45},
+    {name:'Labs',valLabel:'22 entries',pct:55},
+    {name:'Main gate',valLabel:'40 entries',pct:100},
+    {name:'Hostel',valLabel:'30 entries',pct:75},
+  ]}
+},
+
+};
+
+/* ============ RENDER: generic banner + stats + two-col ============ */
+function renderGeneric(cfg){
+  const stats = cfg.stats.map(s=>`
+    <div class="stat-card">
+      <div class="stat-top"><div class="stat-icon">${s.icon}</div></div>
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-label">${s.label}</div>
+    </div>`).join('');
+
+  const rows = cfg.left.rows.map(r=>`
+    <div class="list-row">
+      <div class="list-left">
+        <div class="tag-chip">${r.tag}</div>
+        <div>
+          <div class="list-title">${r.title}</div>
+          ${r.sub?`<div class="list-sub">${r.sub}</div>`:''}
+        </div>
+      </div>
+      ${r.right?`<div class="list-right">${r.right}</div>`:''}
+    </div>`).join('');
+
+  const bars = cfg.right.bars.map(b=>`
+    <div class="bar-row">
+      <div class="bar-top"><span class="bar-name">${b.name}</span><span class="bar-val">${b.valLabel?b.valLabel:b.pct+'%'}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${b.pct}%"></div></div>
+      ${b.note?`<div class="bar-note">${b.note}</div>`:''}
+    </div>`).join('');
+
+  return `
+    <div class="banner">
+      <div>
+        <div class="banner-eyebrow">${cfg.banner.eyebrow}</div>
+        <div class="banner-title">${cfg.banner.title}</div>
+        <div class="banner-sub">${cfg.banner.sub}</div>
+      </div>
+    </div>
+    <div class="stat-grid">${stats}</div>
+    <div class="two-col">
+      <div class="panel"><div class="panel-head"><div class="panel-title">${cfg.left.title}</div></div>${rows}</div>
+      <div class="panel"><div class="panel-head"><div class="panel-title">${cfg.right.title}</div></div>${bars}</div>
+    </div>
+  `;
+}
+
+/* ============ RENDER: dashboard (My Institution) ============ */
+function renderDashboard(){
+  return `
+    <div class="banner">
+      <div>
+        <div class="banner-eyebrow">ODD SEMESTER · 2026</div>
+        <div class="banner-title">Good afternoon, Aravind.</div>
+        <div class="banner-sub">You have 2 assignments due this week and a fee installment pending. Your attendance is holding steady above the eligibility line.</div>
+        <div class="banner-actions">
+          <button class="btn-gold" onclick="navigate('assignments')">View Assignments</button>
+          <button class="btn-ghost" onclick="navigate('billing')">Pay Fees</button>
+        </div>
+      </div>
+      <div class="banner-side">
+        <div class="ring" style="background:conic-gradient(var(--gold) 80%, rgba(255,255,255,.15) 0);">
+          <div style="width:40px;height:40px;border-radius:50%;background:#2d1155;display:flex;align-items:center;justify-content:center;font-size:12px;">80%</div>
+        </div>
+        <div>
+          <div class="side-label">ATTENDANCE</div>
+          <div class="side-value">Eligible · min 75%</div>
+        </div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">📋</div><div class="stat-pill">2 due</div></div><div class="stat-num">5</div><div class="stat-label">Assignments this term</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">📅</div><div class="stat-pill">Sep 14</div></div><div class="stat-num">12 days</div><div class="stat-label">Until exams begin</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">💳</div><div class="stat-pill">Due Aug 5</div></div><div class="stat-num">₹12,400</div><div class="stat-label">Fee balance</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">📈</div><div class="stat-pill">+0.3</div></div><div class="stat-num">8.4 CGPA</div><div class="stat-label">Overall grade</div></div>
+    </div>
+
+    <div class="panel-head"><div class="panel-title">Quick Access</div><div class="panel-link" onclick="navigate('study-plan')">Open study plan</div></div>
+    <div class="quick-grid">
+      <div class="quick-card" onclick="navigate('attendance')"><div class="quick-icon">🧑‍🎓</div><div class="quick-title">Attendance</div><div class="quick-sub">Daily & subject-wise attendance log</div></div>
+      <div class="quick-card" onclick="navigate('timetable')"><div class="quick-icon">📅</div><div class="quick-title">Timetable</div><div class="quick-sub">This week's class schedule</div></div>
+      <div class="quick-card" onclick="navigate('idcard')"><div class="quick-icon">🪪</div><div class="quick-title">ID Card</div><div class="quick-sub">Digital campus ID & access pass</div></div>
+      <div class="quick-card" onclick="navigate('eportfolio')"><div class="quick-icon">🗂</div><div class="quick-title">E-Portfolio</div><div class="quick-sub">Showcase projects & certificates</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Announcements</div><div class="panel-link" onclick="navigate('announcement')">View all</div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip" style="background:#fde6e2;color:var(--danger);">●</div><div><div class="list-title">Fee payment deadline extended</div><div class="list-sub">Last date for semester fee moved to Aug 5</div></div></div><div class="list-right">2h ago</div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip" style="background:#fff2df;color:#a6690a;">●</div><div><div class="list-title">Internal assessment II schedule released</div><div class="list-sub">Check Exam Schedules for your slot</div></div></div><div class="list-right">1d ago</div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip">●</div><div><div class="list-title">Placement drive — TCS & Infosys</div><div class="list-sub">Register under Scholarship & Careers by Aug 2</div></div></div><div class="list-right">2d ago</div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip" style="background:#e4f7ea;color:#1f8a4c;">●</div><div><div class="list-title">Independence Day — campus holiday</div><div class="list-sub">College closed on Aug 15</div></div></div><div class="list-right">3d ago</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Today's Classes</div><div class="panel-link" onclick="navigate('timetable')">Full timetable</div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip">9:00<br>AM</div><div><div class="list-title">Data Structures</div><div class="list-sub">Room 204 · Prof. Meenakshi</div></div></div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip">11:00<br>AM</div><div><div class="list-title">Operating Systems</div><div class="list-sub">Lab 3 · Prof. Karthik</div></div></div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip">1:30<br>PM</div><div><div class="list-title">Discrete Mathematics</div><div class="list-sub">Room 108 · Prof. Iyer</div></div></div></div>
+        <div class="list-row"><div class="list-left"><div class="tag-chip">3:00<br>PM</div><div><div class="list-title">Student Counselling</div><div class="list-sub">Room 12 · Slot B</div></div></div></div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============ RENDER: study plan (special layout) ============ */
+function renderStudyPlan(){
+  const targets = [
+    {name:'Data Structures',pct:72,note:'Unit 4 — Trees & Graphs · 6h / week'},
+    {name:'Operating Systems',pct:54,note:'Unit 3 — Deadlocks · 5h / week'},
+    {name:'Discrete Mathematics',pct:88,note:'Unit 5 — Graph Theory · 4h / week'},
+    {name:'DBMS',pct:41,note:'Unit 2 — Normalization · 5h / week'},
+  ];
+  const blocks = [
+    {day:'Mon',title:'DS — revise AVL rotations',time:'6:00 PM · 90 min',done:true},
+    {day:'Tue',title:"OS — solve banker's algorithm set",time:'7:00 PM · 60 min',done:true},
+    {day:'Wed',title:'DBMS — 3NF & BCNF practice',time:'6:30 PM · 75 min',done:false},
+    {day:'Thu',title:'DM — graph colouring problems',time:'5:30 PM · 60 min',done:false},
+    {day:'Fri',title:'DS — assignment II submission',time:'4:00 PM · 45 min',done:false},
+    {day:'Sat',title:'Full revision + mock test',time:'10:00 AM · 3 hrs',done:false},
+  ];
+  const barsHtml = targets.map(t=>`
+    <div class="bar-row">
+      <div class="bar-top"><span class="bar-name">${t.name}</span><span class="bar-val">${t.pct}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${t.pct}%"></div></div>
+      <div class="bar-note">${t.note}</div>
+    </div>`).join('');
+  const blocksHtml = blocks.map(b=>`
+    <div class="list-row">
+      <div class="list-left">
+        <div class="tag-chip">${b.day}</div>
+        <div>
+          <div class="list-title" style="${b.done?'text-decoration:line-through;color:#a99bc4;':''}">${b.title}</div>
+          <div class="list-sub">${b.time}</div>
+        </div>
+      </div>
+      <div style="font-size:16px;">${b.done?'✅':'⭕'}</div>
+    </div>`).join('');
+
+  return `
+    <div class="banner">
+      <div>
+        <div class="banner-eyebrow">WEEK 6 · ODD SEMESTER 2026</div>
+        <div class="banner-title">Study Plan</div>
+        <div class="banner-sub">2 of 6 study blocks completed this week. Keep the daily streak going to stay ahead of internal assessment II.</div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">🎯</div></div><div class="stat-num">33%</div><div class="stat-label">Weekly goal progress</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">⏱</div></div><div class="stat-num">20 hrs</div><div class="stat-label">Planned study time</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">✅</div></div><div class="stat-num">2</div><div class="stat-label">Blocks completed</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon">📅</div></div><div class="stat-num">12 days</div><div class="stat-label">Until exams begin</div></div>
+    </div>
+    <div class="two-col">
+      <div class="panel"><div class="panel-head"><div class="panel-title">Subject targets</div></div>${barsHtml}</div>
+      <div class="panel"><div class="panel-head"><div class="panel-title">This week's blocks</div></div>${blocksHtml}</div>
+    </div>
+  `;
+}
+
+/* ============ ROUTER ============ */
+function navigate(id){
+  renderSidebar(id);
+  const root = document.getElementById('page-root');
+  if(id==='dashboard'){ root.innerHTML = renderDashboard(); }
+  else if(id==='study-plan'){ root.innerHTML = renderStudyPlan(); }
+  else if(PAGES[id]){ root.innerHTML = renderGeneric(PAGES[id]); }
+  else { root.innerHTML = renderDashboard(); }
+  window.scrollTo(0,0);
+}
+
+// allow Enter key to submit login
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.getElementById('login-screen').style.display!=='none'){
+    doLogin();
+  }
+});
+</script>
+</body>
+</html>
